@@ -358,7 +358,7 @@ namespace LibgenDesktop.Models.Download
                                         }
                                         else
                                         {
-                                            url = url.Replace("<", "%3C").Replace(">", "%3E");
+                                            url = EncodeInvalidUrlCharacters(url);
                                             isUrlValid = Uri.IsWellFormedUriString(url, UriKind.Absolute);
                                         }
                                         if (!isUrlValid)
@@ -476,14 +476,14 @@ namespace LibgenDesktop.Models.Download
                 isRedirect = IsRedirect(response.StatusCode);
                 if (isRedirect)
                 {
-                    referer = url;
-                    if (!GenerateRedirectUrl(referer, response.Headers.Location, out url))
+                    if (!GenerateRedirectUrl(url, response.Headers.Location, out string redirectUrl))
                     {
                         ReportError(downloadItem, localization.GetLogLineIncorrectRedirectUrl(Uri.UnescapeDataString(response.Headers.Location.ToString())));
                         return null;
                     }
                     else
                     {
+                        url = redirectUrl;
                         ReportLogLine(downloadItem, DownloadItemLogLineType.INFORMATIONAL, localization.GetLogLineRedirect(Uri.UnescapeDataString(url)));
                         redirectCount++;
                         if (redirectCount == MAX_DOWNLOAD_REDIRECT_COUNT)
@@ -1116,21 +1116,21 @@ namespace LibgenDesktop.Models.Download
 
         private bool GenerateRedirectUrl(string requestUrl, Uri newLocationUri, out string redirectUrl)
         {
-            if (!newLocationUri.IsWellFormedOriginalString())
+            if (newLocationUri.IsAbsoluteUri)
             {
-                redirectUrl = null;
-                return false;
-            }
-            else if (newLocationUri.IsAbsoluteUri)
-            {
-                redirectUrl = newLocationUri.ToString();
-                return true;
+                redirectUrl = EncodeInvalidUrlCharacters(newLocationUri.ToString());
             }
             else
             {
-                redirectUrl = new Uri(new Uri(requestUrl), newLocationUri).ToString();
-                return true;
+                redirectUrl = EncodeInvalidUrlCharacters(new Uri(new Uri(requestUrl), newLocationUri).ToString());
             }
+            return Uri.IsWellFormedUriString(redirectUrl, UriKind.Absolute);
+        }
+
+        private string EncodeInvalidUrlCharacters(string url)
+        {
+            return url.Replace(" ", "%20").Replace("^", "%5E").Replace("`", "%60").Replace("<", "%3C").Replace(">", "%3E").
+                Replace("[", "%5B").Replace("]", "%5D").Replace("{", "%7B").Replace("}", "%7D").Replace("|", "%7C");
         }
 
         private DownloadItemLogLineEventArgs AddLogLine(DownloadItem downloadItem, DownloadItemLogLineType logLineType, string logLine)

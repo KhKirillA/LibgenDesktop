@@ -26,21 +26,24 @@ namespace LibgenDesktop.Setup
             X86.Add(new AppFile(@"x86\SQLite.Interop.dll", "SQLite.Interop.dll"));
             X64.Add(new AppFile(@"x64\SQLite.Interop.dll", "SQLite.Interop.dll"));
             AddFile(@"Languages\English.lng");
-            AddFile(@"Languages\Russian.lng");
-            AddFile(@"Languages\Romanian.lng");
-            AddFile(@"Languages\Ukrainian.lng");
-            AddFile(@"Languages\Spanish.lng");
             AddFile(@"Languages\French.lng");
-            AddFile(@"Mirrors\mirrors.config");
-            AddFile(@"Mirrors\libgen_io_nonfiction.xslt");
-            AddFile(@"Mirrors\libgen_pw_nonfiction.xslt");
-            AddFile(@"Mirrors\libgen_pw_fiction.xslt");
-            AddFile(@"Mirrors\libgen_pw_scimag.xslt");
-            AddFile(@"Mirrors\bookfi_net.xslt");
+            AddFile(@"Languages\Romanian.lng");
+            AddFile(@"Languages\Russian.lng");
+            AddFile(@"Languages\Simplified Chinese.lng");
+            AddFile(@"Languages\Spanish.lng");
+            AddFile(@"Languages\Turkish.lng");
+            AddFile(@"Languages\Ukrainian.lng");
             AddFile(@"Mirrors\b_ok_xyz_step1.xslt");
             AddFile(@"Mirrors\b_ok_xyz_step2.xslt");
+            AddFile(@"Mirrors\booklid_org_step1.xslt");
+            AddFile(@"Mirrors\booklid_org_step2.xslt");
             AddFile(@"Mirrors\booksc_org_step1.xslt");
             AddFile(@"Mirrors\booksc_org_step2.xslt");
+            AddFile(@"Mirrors\libgen_lc_fiction.xslt");
+            AddFile(@"Mirrors\libgen_lc_nonfiction.xslt");
+            AddFile(@"Mirrors\libgen_lc_scimag.xslt");
+            AddFile(@"Mirrors\mirrors.config");
+            AddFile(@"Mirrors\sci-hub.xslt");
         }
 
         public static string GetBinariesDirectoryPath(bool is64Bit)
